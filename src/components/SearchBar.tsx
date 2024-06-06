@@ -1,23 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-"use client"
+"use client";
 
-import { getProducts } from '@/helpers/product.helper';
-import { IProduct } from '@/types';
-import Link from 'next/link';
-import React, {  useEffect } from 'react'
-import { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { IoIosArrowForward } from 'react-icons/io';
-
+import { getProducts } from "@/helpers/product.helper";
+import { IProduct } from "@/types";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import { IoIosArrowForward } from "react-icons/io";
 
 export const SearchBar: React.FC<{}> = () => {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<IProduct[]>([]);
+  const [isResultsVisible, setIsResultsVisible] = useState(false);
+  const resultsRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const productsGet = async (): Promise<void> => {
       if (!searchText) {
         setResults([]);
+        setIsResultsVisible(false);
         return;
       }
 
@@ -27,6 +29,7 @@ export const SearchBar: React.FC<{}> = () => {
           product.name.toLowerCase().includes(searchText.toLowerCase()),
         );
         setResults(filteredProducts);
+        setIsResultsVisible(true);
         console.log(filteredProducts);
       } catch (error) {
         console.error(error);
@@ -39,6 +42,19 @@ export const SearchBar: React.FC<{}> = () => {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchText(e.target.value);
   }
+
+  function handleClickOutside(e: MouseEvent): void {
+    if (!resultsRef.current?.contains(e.target as Node)) {
+      setIsResultsVisible(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="absolute -left-4 top-[100%] lg:static">
@@ -54,27 +70,37 @@ export const SearchBar: React.FC<{}> = () => {
           className="absolute left-4 z-10 translate-y-[90%] transform text-neutral-400 lg:static lg:-translate-y-[180%] lg:translate-x-[90%]"
         />
       </div>
-
-      <div className="absolute top-full mt-[3.3rem] w-60 lg:top-40 lg:mt-3 lg:w-52 xl:mt-8 xl:w-[200px]">
-        <ul>
-          {results.map((product) => (
-            <Link href={`/product/${product.id}`} key={product.id}>
-              <li
-                className="relative mb-1 flex items-center rounded-3xl border border-neutral-700 bg-neutral-900 p-2 text-white hover:bg-gray-800"
-                key={product.id}
-              >
-                <img
-                  className="h-8 w-8 object-cover"
-                  src={product.image}
-                  alt={product.name}
-                />
-                {product.name}
-                <IoIosArrowForward className="hover: ml-1" />
-              </li>
-            </Link>
-          ))}
-        </ul>
-      </div>
+      {isResultsVisible && (
+        <div
+          ref={resultsRef}
+          className="absolute top-full mt-[3.3rem] w-60 lg:top-40 lg:mt-3 lg:w-52 xl:mt-8 xl:w-[200px]"
+        >
+          {results.length === 0 ? (
+            <div className="text-[12px] rounded-3xl border border-neutral-700 bg-neutral-900 p-2 text-white">
+              ¡Ups! No encontramos lo que estás buscando.
+            </div>
+          ) : (
+            <ul>
+              {results.map((product) => (
+                <Link href={`/product/${product.id}`} key={product.id}>
+                  <li
+                    className="relative mb-1 flex items-center rounded-3xl border border-neutral-700 bg-neutral-900 p-2 text-white hover:bg-gray-800"
+                    key={product.id}
+                  >
+                    <img
+                      className="h-8 w-8 object-cover"
+                      src={product.image}
+                      alt={product.name}
+                    />
+                    {product.name}
+                    <IoIosArrowForward className="hover: ml-1" />
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -19,7 +19,6 @@ function NavBar() {
   const { cart } = useCart();
   const router = useRouter();
 
-
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
@@ -36,11 +35,13 @@ function NavBar() {
           <SearchBar />
         </div>
       </div>
-      <div className="lg:ml-8 xl:ml-0 lg:flex lg:items-center lg:justify-center lg:gap-3">
+      <div className="lg:ml-[80px] lg:flex lg:items-center lg:justify-center lg:gap-3 xl:ml-5">
         <NavLink href="/">Inicio</NavLink>
         <NavLink href="/product">Productos</NavLink>
         {!isLoggedIn && <NavLink href="/login">Inicio de Sesión</NavLink>}
         {!isLoggedIn && <NavLink href="/register">Registro</NavLink>}
+        <NavLink href="/about">Sobre Nosotros</NavLink>
+        <NavLink href="/faq">FAQ</NavLink>
         {isLoggedIn && (
           <NavLink href="/cart">
             <div className="relative flex">
@@ -91,6 +92,8 @@ function NavBar() {
                 </div>
               </NavLinksBg>
             )}
+            <NavLinksBg href="/about">Sobre Nosotros</NavLinksBg>
+            <NavLinksBg href="/faq">FAQ</NavLinksBg>
             {isLoggedIn && (
               <NavLinksBg href="/dashboard">
                 <FiUser size={32} />

@@ -200,7 +200,7 @@ function ProductsComponent() {
                 </h3>
                 <div className="flex flex-row gap-2">
                   <h3 className="text-white">
-                    Mientras tanto, elige otro filtro porfavor
+                    Mientras tanto, elige otro filtro por favor
                   </h3>
                   <MdShoppingCart size={25} color="white" />
                 </div>

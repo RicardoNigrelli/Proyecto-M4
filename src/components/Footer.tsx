@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import React from "react";
 
 function Footer() {
@@ -29,13 +30,13 @@ function Footer() {
           Links Útiles
         </div>
         <div className="text-[10px] leading-[normal] text-white sm:w-[144px]">
-          Inicio
+          <Link href="/">Inicio</Link>
           <br />
-          Productos
+          <Link href="/products">Productos</Link>
           <br />
-          Acerca de Nosotros
+          <Link href="/about">Sobre Nosotros</Link>
           <br />
-          FAQ
+          <Link href="/faq">FAQ</Link>
         </div>
       </div>
 
@@ -46,7 +47,15 @@ function Footer() {
             alt="social1"
             src="/whatsapp-svgrepo-com.png"
           />
-          <h4 className="hidden sm:flex sm:text-white">WhatsApp</h4>
+          <h4 className="hidden sm:flex sm:text-white">
+            <a
+              href="https://www.whatsapp.com/?lang=es_LA"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
+          </h4>
         </div>
         <div className="flew-row flex items-center gap-3 text-[10px] font-normal text-white">
           <img
@@ -54,7 +63,15 @@ function Footer() {
             alt="social2"
             src="/instagram-svgrepo-com.png"
           />
-          <h4 className="hidden sm:flex sm:text-white">Instagram</h4>
+          <h4 className="hidden sm:flex sm:text-white">
+            <a
+              href="https://www.instagram.com/?hl=es"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          </h4>
         </div>
         <div className="flew-row flex items-center gap-3 text-[10px] font-normal text-white">
           <img
@@ -62,7 +79,15 @@ function Footer() {
             alt="social3"
             src="/facebook-svgrepo-com.png"
           />
-          <h4 className="hidden sm:flex sm:text-white">Facebook</h4>
+          <h4 className="hidden sm:flex sm:text-white">
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook
+            </a>
+          </h4>
         </div>
       </div>
     </div>

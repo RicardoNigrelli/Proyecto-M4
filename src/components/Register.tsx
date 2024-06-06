@@ -134,7 +134,7 @@ function Register() {
         {touchedFields.repeatPassword && userErrors.repeatPassword && (
           <p>{userErrors.repeatPassword}</p>
         )}
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">Nombre</label>
         <input
           name="name"
           type="text"
@@ -144,7 +144,7 @@ function Register() {
           onBlur={handleBlur}
         />
         {touchedFields.name && userErrors.name && <p>{userErrors.name}</p>}
-        <label htmlFor="direccion">Address</label>
+        <label htmlFor="direccion">Dirección</label>
         <input
           name="address"
           type="text"
@@ -156,7 +156,7 @@ function Register() {
         {touchedFields.address && userErrors.address && (
           <p>{userErrors.address}</p>
         )}
-        <label htmlFor="phone">Phone</label>
+        <label htmlFor="phone">Teléfono</label>
         <input
           name="phone"
           type="text"
@@ -167,7 +167,7 @@ function Register() {
         />
         {touchedFields.phone && userErrors.phone && <p>{userErrors.phone}</p>}
         <button type="submit" disabled={isSubmitDisabled}>
-          Register
+          ¡Registrate!
         </button>
       </form>
     </div>
