@@ -6,7 +6,8 @@ import { AllOrders, IUser } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { notify } from "./Notifications";
+import { notify } from "@/components/Notifications";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
   const [user, setUser] = useState<IUser[]>([]);

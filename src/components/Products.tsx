@@ -10,6 +10,8 @@ import { IProduct } from "@/types";
 import Image from "next/image";
 import { MdShoppingCart } from "react-icons/md";
 import { notify } from "@/components/Notifications";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Loading = () => <div>Cargando...</div>;
 

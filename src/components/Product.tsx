@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { notify } from "@/components/Notifications";
+import "react-toastify/dist/ReactToastify.css";
 
 const DetailProduct = ({ params }: { params: { idProduct: string } }) => {
   const [product, setProduct] = useState<IProduct>();

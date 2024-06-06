@@ -8,7 +8,8 @@ import { UserDtos } from "@/types";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { notify } from "./Notifications";
+import { notify } from "@/components/Notifications";
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
   const router = useRouter();

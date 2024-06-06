@@ -1,13 +1,12 @@
 import Benefits from "@/components/Benefits";
-import Card from "@/components/Card";
 import Cards from "@/components/Cards";
 import Categories from "@/components/Categories";
 import FAQPartial from "@/components/FAQPartial";
 import Header from "@/components/Header";
 import Reviews from "@/components/Reviews";
-import productsToPreLoad from "@/helpers/preloadProducts";
-import Image from "next/image";
-import Link from "next/link";
+import { notify } from "@/components/Notifications";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function Home() {
   return (

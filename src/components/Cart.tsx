@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation";
 import { createOrder } from "@/helpers/order.helpers";
 import { OrderDtos } from "@/types";
 import Link from "next/link";
-import { notify } from "./Notifications";
+import { notify } from "@/components/Notifications";
+import "react-toastify/dist/ReactToastify.css";
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, clearCart } = useCart();
