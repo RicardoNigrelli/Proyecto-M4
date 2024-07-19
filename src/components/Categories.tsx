@@ -31,9 +31,9 @@ const Categories = () => (
     {categoriesToPreLoad.map((category, index) => (
       <Category
         key={category.name}
-        title={category.name} //almacena
-        icon={icons[index]} //0
-        categoryId={index} //0
+        title={category.name}
+        icon={icons[index]} 
+        categoryId={index} 
       />
     ))}
   </div>

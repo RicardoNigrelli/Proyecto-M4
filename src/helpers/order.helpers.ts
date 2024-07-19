@@ -1,11 +1,13 @@
 import { notify } from "@/components/Notifications";
 import { AllOrders, IOrder, OrderDtos } from "@/types";
 
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 export async function createOrder(order: OrderDtos): Promise<IOrder> {
   const token = localStorage.getItem("token");
-  console.log(token);
+    
   try {
     const response = await fetch(`${apiUrl}/orders`, {
       method: "POST",
@@ -32,7 +34,6 @@ export async function createOrder(order: OrderDtos): Promise<IOrder> {
 
 export async function getOrders(): Promise<AllOrders[]> {
   const token = localStorage.getItem("token");
-  console.log(token);
   try {
     const response = await fetch(`${apiUrl}/users/orders`, {
       method: "GET",

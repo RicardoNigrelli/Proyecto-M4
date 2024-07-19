@@ -11,13 +11,17 @@ import { NavLinksBg } from "./NavLinksBg";
 import { FiMenu, FiShoppingCart, FiUser } from "react-icons/fi";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { useCart } from "@/context/CartContext";
-import { useRouter } from "next/navigation";
+
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { login, isLoggedIn, logout } = useAuth();
-  const { cart } = useCart();
-  const router = useRouter();
+  const { isLoggedIn, logout } = useAuth();
+  const { cart, clearCart } = useCart();
+
+  const handleLogout = () => {
+    logout(true)
+    clearCart()
+  }
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -58,7 +62,7 @@ function NavBar() {
           </NavLink>
         )}
         {isLoggedIn && (
-          <NavLink onClick={() => logout(true)}>
+          <NavLink onClick={handleLogout}>
             <RiLogoutBoxLine size={32} />
           </NavLink>
         )}
@@ -100,8 +104,8 @@ function NavBar() {
               </NavLinksBg>
             )}
             {isLoggedIn && (
-              <NavLinksBg>
-                <RiLogoutBoxLine size={35} />
+              <NavLinksBg onClick={handleLogout}>
+                <RiLogoutBoxLine size={32} />
               </NavLinksBg>
             )}
           </ul>

@@ -37,6 +37,7 @@ const Cart: React.FC = () => {
   propertiesFiltered.sort(
     (a, b) => orderProperties.indexOf(a) - orderProperties.indexOf(b),
   );
+  
 
   const renameMap: { [key: string]: string } = {
     image: "Imagen del Producto",
@@ -49,7 +50,6 @@ const Cart: React.FC = () => {
     (prop) => renameMap[prop] || prop,
   );
 
-  console.log(propertiesFiltered);
 
   const handleRemove = (id: number) => {
     notify(
@@ -66,29 +66,28 @@ const Cart: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const isLogged = localStorage.getItem("token");
-    if (!isLogged) {
+    if (!isLoggedIn) {
       setError(new Error("Debes estar logueado para ver el carrito."));
+      setIdProducts({ products: [] });
     } else {
       setIdProducts({ products: cart.map((product) => product.id) });
     }
-  }, [cart, router]);
+  }, [cart, isLoggedIn]);
 
-  if (error && !hasRedirected && !isLoggedIn && !cart.length) {
+  if (error && !hasRedirected && !cart.length) {
     notify("ToastRedirect", "¡Debes tener una cuenta para ver el carrito!");
     router.push("/");
     setHasRedirected(true);
     return null;
   }
 
-  const handleBuy = async (e: React.FormEvent) => {
+  const handleBuy = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!selectedOption) {
       notify(
         "ToastError",
         "Por favor, elija una opción de envío antes de comprar.",
       );
-
       return;
     }
     try {
@@ -97,16 +96,12 @@ const Cart: React.FC = () => {
       notify("ToastRegular", "Compra realizada");
       clearCart();
       notify("ToastOrders", "Ir a las ordenes de compra");
-      // router.push("/dashboard");
     } catch (error) {
       console.error("Error al realizar la compra", error);
       notify("ToastError", "Error al realizar la compra");
     }
   };
 
-  if (!isLoggedIn) {
-    return null;
-  }
 
   return (
     <div className="mb-10 flex w-full flex-col text-white">

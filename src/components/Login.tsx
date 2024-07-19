@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+
 function Login() {
   const [userDtos, setUserDtos] = useState<UserLoginDtos>({
     email: "",
@@ -27,7 +28,7 @@ function Login() {
     password: false,
   });
 
-  const { login, isLoggedIn, logout } = useAuth();
+  const { login, isLoggedIn } = useAuth();
 
   const router = useRouter();
 
@@ -45,19 +46,26 @@ function Login() {
     setTouchedFields({ ...touchedFields, [name]: true });
   };
 
-  const isSubmitDisabled = Object.values(userErrors).some(
-    (error) => error !== "",
-  );
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const updatedTouchedFields = {
+      email: true,
+      password: true,
+    };
+    setTouchedFields(updatedTouchedFields);
+    const updatedUserErrors = validateUserLoginDtos(userDtos);
+    setUserErrors(updatedUserErrors);
+    const hasErrors = Object.values(updatedUserErrors).some(
+      (error) => error !== "",
+    );
+    if (hasErrors) {
+      return;
+    }
+
     try {
       const response = await loginUser(userDtos);
-
       localStorage.setItem("token", response.token);
-
       const allUserDtos = response.user;
-
       const dtosFiltered = Object.keys(allUserDtos)
         .filter((key) => key !== "credential")
         .reduce((obj: UserFilterDto, key: string) => {
@@ -65,27 +73,33 @@ function Login() {
           return obj;
         }, {});
       const userArray = [dtosFiltered];
-
       localStorage.setItem("user", JSON.stringify(userArray));
       login();
       notify("ToastRegular", "¡Sesión iniciada!");
-
       router.push("/");
+      setUserDtos({
+        email: "",
+        password: ""
+      })
     } catch (error) {
       console.error("Error logging in user", error);
       notify("ToastError", "¡Datos Incorrectos!");
-    }
-
-    setUserDtos({
-      email: "",
-      password: "",
+      setUserDtos({
+      email: userDtos.email,
+      password: userDtos.password,
     });
+    } 
   };
+
+  if (isLoggedIn) {
+          notify("ToastRegular", "Ya has iniciado sesión!");
+          router.push("/product");
+  }
 
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="flex h-full flex-col items-center justify-center gap-10 lg:mb-10 lg:w-1/2">
-        <h1 className="text-[1.3rem] text-white lg:text-2xl xl:text-3xl">
+            <h1 className="text-[1.3rem] text-white lg:text-2xl xl:text-3xl">
           Inicia <strong>Sesión</strong>!
         </h1>
         <div className="h-[300px] w-[300px]">
@@ -128,9 +142,7 @@ function Login() {
         {touchedFields.password && userErrors.password && (
           <p>{userErrors.password}</p>
         )}
-        <button type="submit" disabled={isSubmitDisabled}>
-          Ingresar
-        </button>
+        <button>Ingresar</button>
       </form>
     </div>
   );

@@ -2,10 +2,7 @@ import { toast } from "react-toastify";
 import React from "react";
 import Link from "next/link";
 import { FiShoppingCart } from "react-icons/fi";
-import { useCart } from "@/context/CartContext";
 import { IoMdCart } from "react-icons/io";
-
-
 
 interface ToastWithButtonsProps {
   message: string;
@@ -26,7 +23,6 @@ const ToastError: React.FC<ToastWithButtonsProps> = ({ message }) => (
     {message}
   </div>
 ); 
-
 
 const ToastRedirect: React.FC<ToastWithButtonsProps> = ({
   message,
@@ -140,8 +136,8 @@ export const notify = (
   message: string,
   onAccept?: () => void,
   onCancel?: () => void,
-  removeFromCart?: (id: any) => void,
-  id?: any,
+  removeFromCart?: (id: number) => void,
+  id?: number,
 ) => {
   switch (type) {
     case "ToastError":
@@ -202,7 +198,7 @@ export const notify = (
             width: "300px",
             border: "1px solid #343434",
           },
-          autoClose: 10000,
+          autoClose: 8000,
         },
       );
       break;
@@ -222,7 +218,7 @@ export const notify = (
             width: "300px",
             border: "1px solid #343434",
           },
-          autoClose: 10000,
+          autoClose: 6000,
         },
       );
       break;
@@ -242,7 +238,7 @@ export const notify = (
             width: "300px",
             border: "1px solid #343434",
           },
-          autoClose: 10000,
+          autoClose: 6000,
         },
       );
       break;

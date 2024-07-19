@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { Review } from "@/types";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const reviews: Review[] = [
   {

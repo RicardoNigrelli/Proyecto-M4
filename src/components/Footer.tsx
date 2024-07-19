@@ -32,7 +32,7 @@ function Footer() {
         <div className="text-[10px] leading-[normal] text-white sm:w-[144px]">
           <Link href="/">Inicio</Link>
           <br />
-          <Link href="/products">Productos</Link>
+          <Link href="/product">Productos</Link>
           <br />
           <Link href="/about">Sobre Nosotros</Link>
           <br />

@@ -1,6 +1,6 @@
 "use client";
 import { notify } from "@/components/Notifications";
-import { IUser } from "@/types";
+import { IUser} from "@/types";
 import { useRouter } from "next/navigation";
 
 import React, {
@@ -24,19 +24,24 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userLogged, setUserLogged] = useState<IUser[]>([]);
 
+
   useEffect(() => {
+    const storedUserLogged = localStorage.getItem("user")
     const storedLoggedInStatus = localStorage.getItem("isLoggedIn");
+
     if (storedLoggedInStatus === "true") {
       setIsLoggedIn(true);
     }
-    console.log(userLogged);
-  }, [userLogged]);
+    if (storedUserLogged) {
+      setUserLogged(JSON.parse(storedUserLogged));
+    }
+  }, []);
 
   const login = () => {
     setIsLoggedIn(true);
     const user = JSON.parse(localStorage.getItem("user") || "null");
     if (user) {
-      setUserLogged([user]);
+      setUserLogged(user);
     }
     console.log(user);
     localStorage.setItem("isLoggedIn", "true");
@@ -53,10 +58,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       notify("ToastRegular", "¡Sesión Finalizada!");
       router.push("/");
     }
+    
   };
 
   return (
-    <AuthContext.Provider value={{ userLogged, isLoggedIn, login, logout }}>
+    <AuthContext.Provider
+      value={{ userLogged, isLoggedIn, login, logout}}
+    >
       {children}
     </AuthContext.Provider>
   );

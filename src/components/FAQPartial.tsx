@@ -29,9 +29,9 @@ function FAQPartial() {
   };
 
   return (
-    <div className="m-3 flex flex-col items-center justify-center gap-3">
+    <div className="flex w-full flex-col items-center justify-center p-5">
       <div>
-        <h2 className="text-xl text-white lg:text-2xl xl:text-3xl">
+        <h2 className="pb-4 text-xl text-white lg:text-2xl xl:text-3xl">
           Preguntas <strong>Frecuentes</strong>
         </h2>
       </div>
@@ -39,10 +39,12 @@ function FAQPartial() {
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className="mb-3 sm:w-[400px] rounded-3xl border border-neutral-700 p-5"
+          className="mb-3 w-full max-w-2xl rounded-3xl border border-neutral-700 p-5"
         >
-          <div className="flex items-center justify-between">
-            <h4 className="text-[10px] sm:text-sm text-white">{faq.question}</h4>
+          <div className="flex items-center justify-between ">
+            <h4 className="w-2/3 text-[10px] text-white sm:text-sm">
+              {faq.question}
+            </h4>
             <button
               onClick={() => handleToggle(index)}
               className={`flex h-[25px] w-[25px] items-center justify-center rounded-full border border-neutral-700 transition-transform ${
@@ -57,7 +59,8 @@ function FAQPartial() {
             </button>
           </div>
           {openIndex === index && (
-            <p className="mt-3 transform text-[10px] sm:text-sm text-white transition-all duration-300 ease-out">
+            <p className="mt-3 w-full transform break-words text-xs text-white transition-all duration-300 ease-out sm:text-sm">
+              {" "}
               {faq.answer}
             </p>
           )}

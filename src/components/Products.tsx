@@ -12,9 +12,6 @@ import { MdShoppingCart } from "react-icons/md";
 import { notify } from "@/components/Notifications";
 import "react-toastify/dist/ReactToastify.css";
 
-
-const Loading = () => <div>Cargando...</div>;
-
 function ProductsComponent() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
@@ -27,7 +24,6 @@ function ProductsComponent() {
     const fetchProducts = async () => {
       const result = await getProducts();
       setProducts(result);
-
       const category = searchParams.get("category");
       if (category) {
         const categoryIndex = parseInt(category, 10);
@@ -37,7 +33,7 @@ function ProductsComponent() {
           );
           setFilteredProducts(filtered);
         } else {
-          setFilteredProducts(result);
+          setFilteredProducts([]);
         }
       } else {
         setFilteredProducts(result);
@@ -48,7 +44,7 @@ function ProductsComponent() {
   }, [searchParams]);
 
   const handleAddToCart = (product: IProduct) => {
-    if (isLoggedIn) {
+    if (product && isLoggedIn) {
       const isProductInCart = cart.some((item) => item.id === product.id);
       if (isProductInCart) {
         notify("ToastError", "¡El producto ya está en el carrito!");
@@ -72,10 +68,6 @@ function ProductsComponent() {
       setFilteredProducts(products);
       router.replace(`/product`);
     } else {
-      const newFilteredProducts = products.filter(
-        (product) => product.categoryId === categoryIndex,
-      );
-      setFilteredProducts(newFilteredProducts);
       router.replace(`/product?category=${categoryIndex}`);
     }
   };
@@ -87,12 +79,17 @@ function ProductsComponent() {
           const categoryParam = searchParams.get("category");
           const categoryIndex = categoryParam
             ? parseInt(categoryParam, 10)
-            : null;
-          return categoryIndex !== null &&
-            !isNaN(categoryIndex) &&
-            categoryIndex !== -1
-            ? categoriesToPreLoad[categoryIndex].name
-            : "Todos los productos";
+            : -1;
+          if (categoryIndex === -1) {
+            return "Todos los productos";
+          } else if (isNaN(categoryIndex)) {
+            return "Categoría desconocida";
+          } else {
+            return (
+              categoriesToPreLoad[categoryIndex]?.name ||
+              "Categoría desconocida"
+            );
+          }
         })()}
       </span>
       <div>
@@ -145,7 +142,9 @@ function ProductsComponent() {
                     <p className="font-bold">${product.price}</p>
 
                     <p className="text-[11px]">
-                      Categoría: {categoriesToPreLoad[product.categoryId].name}
+                      Categoría:{" "}
+                      {categoriesToPreLoad[product.categoryId]?.name ||
+                        "Desconocida"}
                     </p>
                   </div>
                 </div>
@@ -213,6 +212,8 @@ function ProductsComponent() {
     </div>
   );
 }
+
+const Loading = () => <div>Cargando...</div>;
 
 function Products() {
   return (

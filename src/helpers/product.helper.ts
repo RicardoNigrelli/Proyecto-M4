@@ -19,8 +19,8 @@ export async function getProducts(): Promise<IProduct[]> {
     const products: IProduct[] = await res.json();
     console.log(products);
     return products;
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw (error);
   }
 }
 
@@ -32,7 +32,7 @@ export async function getProductById(id: string): Promise<IProduct> {
       throw new Error("Product not found");
     }
     return product;
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw (error);
   }
 }

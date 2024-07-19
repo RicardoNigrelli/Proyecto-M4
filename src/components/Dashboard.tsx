@@ -10,25 +10,17 @@ import { notify } from "@/components/Notifications";
 import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
-  const [user, setUser] = useState<IUser[]>([]);
+  
   const [ordersGetted, setOrders] = useState<AllOrders[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { isLoggedIn } = useAuth();
+  const { userLogged } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    const userFromLocalStorage =
-      typeof window !== "undefined"
-        ? JSON.parse(localStorage.getItem("user") || "[]")
-        : [];
-    setUser(userFromLocalStorage);
-  }, []);
 
   let username = "";
   let firstletter = "";
 
-  if (user[0]) {
-    username = user[0].name;
+  if (userLogged.length > 0) {
+    username = userLogged[0].name;
     firstletter = username.charAt(0).toUpperCase();
   }
 
@@ -43,7 +35,6 @@ function Dashboard() {
     async function gettingOrders() {
       try {
         const ordersGetted = await getOrders();
-        console.log(ordersGetted);
         setOrders(ordersGetted);
       } catch (error) {
         setError(error as Error);
@@ -63,13 +54,9 @@ function Dashboard() {
     return null;
   }
 
-  if (!isLoggedIn) {
-    return null;
-  }
-
   return (
     <div className="text-white">
-      {user.map((user, index) => (
+      {userLogged.map((user, index) => (
         <div key={index} className="flex flex-col lg:flex-row">
           <div className="mb-5 flex w-[100%] flex-col items-center justify-center gap-2 rounded-3xl border border-neutral-700 p-4 lg:mt-5 lg:h-[400px] lg:w-[50%]">
             <div className="button-gradient flex h-12 w-12 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900 text-[30px] lg:h-[100px] lg:w-[100px]">
@@ -88,7 +75,7 @@ function Dashboard() {
               <strong>Teléfono de Contacto:</strong> {user.phone}
             </div>
           </div>
-          <div className="mb-3 w-[100%] p-5 lg:ml-8 lg:w-[100%] flex flex-col-reverse">
+          <div className="mb-3 flex w-[100%] flex-col-reverse justify-end p-5 lg:ml-8 lg:w-[100%]">
             {ordersGetted.map((order, index) => (
               <div
                 key={index}

@@ -30,7 +30,7 @@ export const SearchBar: React.FC<{}> = () => {
         );
         setResults(filteredProducts);
         setIsResultsVisible(true);
-        console.log(filteredProducts);
+       
       } catch (error) {
         console.error(error);
       }
@@ -63,7 +63,7 @@ export const SearchBar: React.FC<{}> = () => {
           placeholder="Buscar"
           value={searchText}
           onChange={handleChange}
-          className="w-45 absolute flex items-center justify-center rounded-3xl border border-neutral-700 bg-neutral-900 pl-12 text-lg text-neutral-400 placeholder-neutral-400 lg:relative"
+          className="w-45 absolute flex items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900 pl-12 text-lg text-neutral-400 placeholder-neutral-400 lg:relative"
         ></input>
         <FaSearch
           color="white"

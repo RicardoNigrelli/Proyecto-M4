@@ -1,5 +1,5 @@
 "use client";
-import { getProductById, getProducts } from "@/helpers/product.helper";
+import { getProducts } from "@/helpers/product.helper";
 import Card from "./Card";
 import { IProduct } from "@/types";
 import Image from "next/image";
@@ -14,7 +14,7 @@ const Cards = () => {
       try {
         const product = await getProducts();
         setProducts(product);
-        console.log(product);
+        
       } catch (error) {
         console.error("Failed to fetch product:", error);
       }
@@ -54,6 +54,6 @@ const Cards = () => {
       </div>
     </div>
   );
-};
+}; 
 
 export default Cards;

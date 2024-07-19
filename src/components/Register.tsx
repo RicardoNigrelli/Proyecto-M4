@@ -10,8 +10,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { notify } from "@/components/Notifications";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "@/context/AuthContext";
 
 function Register() {
+  const {isLoggedIn} = useAuth()
   const router = useRouter();
   const [userDtos, setUserDtos] = useState<UserDtos>({
     email: "",
@@ -53,20 +55,32 @@ function Register() {
     setTouchedFields({ ...touchedFields, [name]: true });
   };
 
-  const isSubmitDisabled = Object.values(userErrors).some(
-    (error) => error !== "",
-  );
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+        const updatedTouchedFields = {
+          email: true,
+          password: true,
+          repeatPassword: true,
+          name: true,
+          address: true,
+          phone: true,
+        };
+        setTouchedFields(updatedTouchedFields);
+        const updatedUserErrors = validateUserDtos(userDtos);
+        setUserErrors(updatedUserErrors);
+        const hasErrors = Object.values(updatedUserErrors).some(
+          (error) => error !== "",
+        );
+        if (hasErrors) {
+          return;
+        }
+
+
     try {
       await registerUser(userDtos);
       notify("ToastRegular", "Registrado correctamente... ¡Inicia sesión!");
       router.push("/login");
-    } catch (error) {
-      console.error("Error registering user", error);
-    }
-
     setUserDtos({
       email: "",
       password: "",
@@ -75,7 +89,24 @@ function Register() {
       address: "",
       phone: "",
     });
+    } catch (error) {
+      console.error("Error registering user", error);
+          setUserDtos({
+            email: userDtos.email,
+            password: userDtos.password,
+            repeatPassword: userDtos.repeatPassword,
+            name: userDtos.name,
+            address: userDtos.address,
+            phone: userDtos.phone,
+          });
+    }
+
   };
+
+    if (isLoggedIn) {
+      notify("ToastRegular", "Ya has iniciado sesión!");
+      router.push("/product");
+    }
 
   return (
     <div className="flex flex-col lg:flex-row">
@@ -166,7 +197,7 @@ function Register() {
           onBlur={handleBlur}
         />
         {touchedFields.phone && userErrors.phone && <p>{userErrors.phone}</p>}
-        <button type="submit" disabled={isSubmitDisabled}>
+        <button type="submit">
           ¡Registrate!
         </button>
       </form>
